@@ -1,0 +1,9 @@
+{
+    "-O": 2,
+    "free-search": true,
+	"intermediate-solutions": false,
+    "output-objective": true,
+    "output-time": true,
+    "solver": "cp-sat@9.11.4210",
+	"time-limit": 1000
+}

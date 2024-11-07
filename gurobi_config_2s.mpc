@@ -1,0 +1,8 @@
+{
+    "-O": 2,
+	"intermediate-solutions": false,
+    "output-objective": true,
+    "output-time": true,
+    "solver": "org.minizinc.mip.gurobi@11.0.3",
+	"time-limit": 1000
+}

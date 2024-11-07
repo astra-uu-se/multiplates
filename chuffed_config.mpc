@@ -1,0 +1,9 @@
+{
+    "-O": 2,
+    "free-search": true,
+    "intermediate-solutions": false,
+    "output-objective": true,
+    "output-time": true,
+    "solver": "org.chuffed.chuffed@0.13.2",
+	"time-limit": 300000
+}
