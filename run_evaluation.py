@@ -11,7 +11,6 @@
 # Purpose: EXECUTE THE EVALUATION AND RECORD ITS RESULTS
 # Author : Ramiz Gindullin, Uppsala University
 
-
 import os.path
 import subprocess
 
@@ -61,6 +60,9 @@ def extract_data(data_text, timeout):
             solution = line[12:]
     if not is_timeout and not is_total_time:
         is_timeout = True
+    if solution == '-1':
+        is_timeout = True
+        solution_time = '-1'
     if is_timeout:
         timeout_str = 'true'
     else:
@@ -90,7 +92,7 @@ def run_config(config):
     f = open(project_path + 'multiplates_models_evaluation_complete_' + config + '.csv', 'w')
     log = open(project_path + 'multiplates_models_evaluation_' + config + '.log', 'w')
 
-    f.write('Solver,Model,' + lines[0][:-2] + ',SolutionTime,IsTimeout,TotalTime, NbSwaps\n')
+    f.write('Solver,Model,' + lines[0][:-1] + ',SolutionTime,IsTimeout,TotalTime, NbSwaps\n')
     log.write(config + ':\n')
     
     for line in lines[1:]:
@@ -98,7 +100,7 @@ def run_config(config):
             cmd_to_str = run_cmd(minizinc_path, project_path, timeout_set,
                                  config, model, line.rsplit(',')[0])
             log.write(cmd_to_str + '\n\n')
-            str_to_write = extract_data(cmd_to_str, timeout)
+            str_to_write = extract_data(cmd_to_str, timeout_set)
             log.write(config + ',' + model + ',' + line.rsplit(',')[0] + ': ' +
                       str_to_write + '\n\n\n\n\n')
             print(line.rsplit(',')[0] + ': ' + str_to_write + ',' + model)
