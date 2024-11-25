@@ -4,6 +4,7 @@
 	"intermediate-solutions": false,
     "output-objective": true,
     "output-time": true,
+	"parallel": 4,
     "solver": "cp-sat@9.11.4210",
 	"time-limit": 300000
 }

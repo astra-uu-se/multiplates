@@ -13,4 +13,4 @@
 
 import run_evaluation
 
-run_evaluation.run_config('gurobi_config')
+run_evaluation.run_config('gurobi_config', 'multiplates_models_evaluation.csv', 'multiplates_models_evaluation_complete_')

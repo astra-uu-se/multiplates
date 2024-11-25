@@ -3,6 +3,7 @@
 	"intermediate-solutions": false,
     "output-objective": true,
     "output-time": true,
+	"parallel": 4,
     "solver": "org.minizinc.mip.gurobi@11.0.3",
 	"time-limit": 300000
 }

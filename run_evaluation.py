@@ -11,6 +11,7 @@
 # Purpose: EXECUTE THE EVALUATION AND RECORD ITS RESULTS
 # Author : Ramiz Gindullin, Uppsala University
 
+
 import os.path
 import subprocess
 
@@ -70,12 +71,12 @@ def extract_data(data_text, timeout):
     return solution_time + ',' + timeout_str + ',' + total_time + ',' + solution
 
 
-def run_config(config):
+def run_config(config, data_file_list_name, output_file_name):
     # list relevant paths:
     minizinc_path = '/Applications/MiniZincIDE.app/Contents/Resources/minizinc'
     project_path = '/Users/ramgi410/Documents-Local/eclipse_workspace/generate_multi_plates_examples/'
-    data_file_list = project_path + 'multiplates_models_evaluation.csv'
-    timeout_set = 300 # set accordingly with configs
+    data_file_list = project_path + data_file_list_name
+    timeout_set = 300 # set in accordance with configs
 
     # relevant lists:
     model_list = ['I_A',
@@ -89,8 +90,8 @@ def run_config(config):
     # main program
     os.path.exists(data_file_list)
     lines = open(data_file_list,'r').readlines()
-    f = open(project_path + 'multiplates_models_evaluation_complete_' + config + '.csv', 'w')
-    log = open(project_path + 'multiplates_models_evaluation_' + config + '.log', 'w')
+    f = open(project_path + output_file_name + config + '.csv', 'w')
+    log = open(project_path + output_file_name + config + '.log', 'w')
 
     f.write('Solver,Model,' + lines[0][:-1] + ',SolutionTime,IsTimeout,TotalTime, NbSwaps\n')
     log.write(config + ':\n')
@@ -109,4 +110,3 @@ def run_config(config):
     f.close()
     log.close()
     print('finished')
-        
