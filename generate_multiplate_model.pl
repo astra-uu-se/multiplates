@@ -18,14 +18,15 @@
 :- use_module(library(timeout)).
 
 % You can run it with following commands:
-% [generate_multiplate_model], generate_all_dzns, halt.
+% [generate_multiplate_model], generate_all_dzns(1), halt.
+% [generate_multiplate_model], generate_all_dzns(2), halt.
 % [generate_multiplate_model].
 % [generate_multiplate_model], top, halt.
 
-top :- generate_all_dzns.
+top :- generate_all_dzns(1).
 
 
-generate_all_dzns :-
+generate_all_dzns(Flag) :-
     findall([NumTargetPlates, SizeTargetPlates, NumSourcePlates, ExNumber],
             (member(NumTargetPlates,  [2,5,10,15]),
              member(SizeTargetPlates, [2,4,6,8]),
@@ -34,40 +35,45 @@ generate_all_dzns :-
              setrand(200),
              ExNumber in 0..9, indomain(ExNumber),
             %NumTargetPlates = 4, SizeTargetPlates = 3, NumSourcePlates = 5, ExNumber = 0,
-             generate_dzn(NumTargetPlates, SizeTargetPlates, NumSourcePlates, ExNumber)
+             generate_dzn(Flag, NumTargetPlates, SizeTargetPlates, NumSourcePlates, ExNumber)
             ),
             AllInfo),
-    write_info(AllInfo),
+    write_info(AllInfo, Flag),
     nl.
 
 % In case there is a need for it in the future
 no_contradictory_options(_NumTargetPlates, _SizeTargetPlates, _NumSourcePlates) :-
     true.
 
-write_info(AllInfo) :-
-    atoms_concat(['multiplates_models_evaluation','.csv'], FileName),
+write_info(AllInfo, Flag) :-
+    (Flag = 1 ->
+         OutputFileName = 'multiplates_models_evaluation'
+    ;
+         OutputFileName = 'multiplates_models_evaluation_2_only'
+    ),
+    atoms_concat([OutputFileName,'.csv'], FileName),
     open(FileName, write, SOut),
     format(SOut, 'Name, NumTargetPlates, SizeTargetPlates, NumSourcePlates, NumCombinations~n', []),
     (foreach([NumTargetPlates, SizeTargetPlates, NumSourcePlates, ExNumber],
              AllInfo),
-     param(SOut)
+     param([Flag, SOut])
     do
-     write_dzn_file_info(SOut, NumTargetPlates, SizeTargetPlates, NumSourcePlates, ExNumber)
+     write_dzn_file_info(Flag, SOut, NumTargetPlates, SizeTargetPlates, NumSourcePlates, ExNumber)
     ),
     close(SOut).
-write_dzn_file_info(SOut, NumTargetPlates, SizeTargetPlates, NumSourcePlates, ExNumber) :-
+write_dzn_file_info(Flag, SOut, NumTargetPlates, SizeTargetPlates, NumSourcePlates, ExNumber) :-
     !,
-    generate_file_name(NumTargetPlates, SizeTargetPlates, NumSourcePlates, ExNumber, _DznName, DznFile),
+    generate_file_name(Flag, NumTargetPlates, SizeTargetPlates, NumSourcePlates, ExNumber, _DznName, DznFile),
     NumCombinations is NumTargetPlates * SizeTargetPlates,
     format(SOut, '~w,~w,~w,~w,~w~n', [DznFile, NumTargetPlates, SizeTargetPlates, NumSourcePlates, NumCombinations]),
     true.
 
-generate_dzn(NumTargetPlates, SizeTargetPlates, NumSourcePlates, ExNumber) :-
-    generate_file_name(NumTargetPlates, SizeTargetPlates, NumSourcePlates, ExNumber, DznName, DznFile),
+generate_dzn(Flag, NumTargetPlates, SizeTargetPlates, NumSourcePlates, ExNumber) :-
+    generate_file_name(Flag, NumTargetPlates, SizeTargetPlates, NumSourcePlates, ExNumber, DznName, DznFile),
 
     write(name(DznName)),nl,
     % 1. Generate and solve model
-    generate_dzn(NumTargetPlates, SizeTargetPlates, NumSourcePlates, ExNumber, DznName, AllVars),
+    generate_dzn(Flag, NumTargetPlates, SizeTargetPlates, NumSourcePlates, ExNumber, DznName, AllVars),
 
     % 2. Write model to the file
     open(DznFile, write, SOut),
@@ -77,8 +83,12 @@ generate_dzn(NumTargetPlates, SizeTargetPlates, NumSourcePlates, ExNumber) :-
     write(written),nl,
     true.
 
-generate_file_name(NumTargetPlates, SizeTargetPlates, NumSourcePlates, ExNumber, DznName, DznFile) :-
-    PrefixName = 'multiplate_dzn_files/',
+generate_file_name(Flag, NumTargetPlates, SizeTargetPlates, NumSourcePlates, ExNumber, DznName, DznFile) :-
+    (Flag = 1 ->
+         PrefixName = 'multiplate_dzn_files/'
+    ;
+         PrefixName = 'multiplate_dzn_files_2_only/'
+    ),
     (foreach(X,  [NumTargetPlates,  SizeTargetPlates,  NumSourcePlates,  ExNumber]),
      foreach(XA, [NumTargetPlatesA, SizeTargetPlatesA, NumSourcePlatesA, ExNumberA])
     do
@@ -89,7 +99,8 @@ generate_file_name(NumTargetPlates, SizeTargetPlates, NumSourcePlates, ExNumber,
     atom_concat(PrefixName, DznName, PrefixNameFunctor),
     atom_concat(PrefixNameFunctor, '.dzn', DznFile).
 
-generate_dzn(NumTargetPlates, SizeTargetPlates, NumSourcePlates, _ExNumber, _DznName, AllVars) :-
+generate_dzn(1, NumTargetPlates, SizeTargetPlates, NumSourcePlates, _ExNumber, _DznName, AllVars) :-
+    !,
     NumCombinations is NumTargetPlates * SizeTargetPlates,
 
     length(CombinationVars, NumCombinations),
@@ -129,6 +140,48 @@ generate_dzn(NumTargetPlates, SizeTargetPlates, NumSourcePlates, _ExNumber, _Dzn
     
     AllVars = [NumTargetPlates, SizeTargetPlates, NumSourcePlates, NumCombinations, CombinationVars],
     !.
+% same as before but in this case we assume that we only test pairs of materials.
+generate_dzn(_, NumTargetPlates, SizeTargetPlates, NumSourcePlates, _ExNumber, _DznName, AllVars) :-
+    NumCombinations is NumTargetPlates * SizeTargetPlates,
+
+    length(CombinationVars, NumCombinations),
+
+    (foreach(CombinationVarsLine, CombinationVars), param(NumSourcePlates)
+    do
+     length(CombinationVarsLine, NumSourcePlates)
+    ),
+
+    repeat,
+    % step 1 - each combination uses 2 materials, each material is provided by a source plate
+    length(CombinationSourcesPairs, NumCombinations),
+    (foreach([CombinationSource1, CombinationSource2], CombinationSourcesPairs), param(NumSourcePlates)
+    do
+     random(1, NumSourcePlates, CombinationSource1),
+     random(1, NumSourcePlates, CombinationSource2)
+    ),
+
+    % step 2 - make sure that each source plate is used at least once
+    (for(I, 1, NumSourcePlates), param(CombinationSourcePairs)
+    do
+     test_source_plate_in_combinations(CombinationSourcePairs, I)
+    ),
+
+    % step 3 - convert to Booleans
+    (foreach([CombinationSource1, CombinationSource2], CombinationSourcesPairs),
+     foreach(CombinationVarsLine, CombinationVars),
+     param(NumSourcePlates)
+    do
+     (for(I, 1, NumSourcePlates),
+      foreach(Var, CombinationVarsLine),
+      param([CombinationSource1, CombinationSource2])
+     do
+      (I = CombinationSource1 -> Var is 1 ;
+       I = CombinationSource2 -> Var is 1 ;
+                                 Var is 0 )
+     )
+    ),
+    AllVars = [NumTargetPlates, SizeTargetPlates, NumSourcePlates, NumCombinations, CombinationVars],
+    !.
 
 post_ctrs_on_each_source_plate(I, CombinationVars) :-
     (foreach(CombinationVarsLine, CombinationVars),
@@ -139,6 +192,11 @@ post_ctrs_on_each_source_plate(I, CombinationVars) :-
      nth1(I, CombinationVarsLine, CombinationVarI)
     ),
     sum(CombinationVarsI, #>=, 1).
+
+test_source_plate_in_combinations([[I, _]|_], I) :- !.
+test_source_plate_in_combinations([[_, I]|_], I) :- !.
+test_source_plate_in_combinations([_|R], I) :- !,
+    test_source_plate_in_combinations(R, I).
 
 label_plate_variables(Vars) :-
     labeling([], Vars).
