@@ -35,7 +35,8 @@ To execute the computational experiments first install and configure Python (ver
 Then:
 
 1. Open a bash shell and position yourself in the directory containing files `run_evaluation.py`, `run_evaluation_cfg1.py`, `run_evaluation_cfg2.py`, `run_evaluation_cfg3.py`, `run_evaluation_cfg1_2combo.py`, `run_evaluation_cfg2_2combo.py`, `run_evaluation_cfg3_2combo.py`
-2. Execute commands, sequentially or in parallel:
+2. Modify the file paths in `run_evaluation.py`, if needed
+3. Execute commands, sequentially or in parallel:
 	1. `time python3 run_evaluation_cfg1.py` to test Dataset 1 on Chuffed (1 thread) (NOT REQUIRED FOR THE ARTICLE)
 	2. `time python3 run_evaluation_cfg2.py` to test Dataset 1 on CP-SAT (4 threads) (NOT REQUIRED FOR THE ARTICLE)
 	3. `time python3 run_evaluation_cfg3.py` to test Dataset 1 on Gurobi (4 threads) (NOT REQUIRED FOR THE ARTICLE)
