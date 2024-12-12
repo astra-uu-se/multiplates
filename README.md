@@ -48,4 +48,4 @@ Then:
 
 Execution of computational experiments will result in the creation of files `multiplates_models_evaluation_complete_chuffed_config.csv`, `multiplates_models_evaluation_complete_cpsat_config.csv`, `multiplates_models_evaluation_complete_gurobi_config.csv`,  `multiplates_models_evaluation_two_only_chuffed_config.csv`, `multiplates_models_evaluation_two_only_cpsat_config.csv`, `multiplates_models_evaluation_two_only_gurobi_config.csv`.
 
-Open the Python Notebook `evaluate_multiplates.ipynb` in, either, Jupyter or Google Collab. Rerun or modify the code if needed.
+Open the Jupyter Notebook `evaluate_multiplates.ipynb` in, either, Anaconda, Google Collab or equivalents. Rerun or modify the code if needed.
