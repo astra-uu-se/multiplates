@@ -77,7 +77,7 @@ constraint count_potential_connections = sum(tp in 1..num_target_plates - 1)(con
 solve minimize sum(num_connections_per_target_plate) - count_potential_connections;
 
 %COMMON OUTPUT
-output [show(target_plate_placement)];
+output [show2d(target_plate_placement)];
 output ["\n"];
 output [show(source_target_connections)];
 output ["\n"];
