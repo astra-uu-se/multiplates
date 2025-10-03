@@ -61,7 +61,7 @@ In: G. Tack (editor), CP-AI-OR 2025. Lecture Notes in Computer Science, volume 1
 DOI: 10.1007/978-3-031-95973-8_16
 
 ```bibtex
-@In{PlateSwaps2025,
+@InProceedings{PlateSwaps2025,
 	author = {Gindullin, Ramiz and Francisco Rodr\'iguez, Mar\'ia Andre\'ina and Seashore-Ludlow, Brinton and Spjuth, Ola},
 	title = {Minimising Source-Plate Swaps for Robotised Compound Dispensing in Microplates},
 	year = {2025},
