@@ -56,7 +56,7 @@ Open the Jupyter Notebook `evaluate_multiplates.ipynb` in, either, Anaconda, Goo
 The following manuscript can be used to cite this project:
 
 R. Gindullin, M. A. Francisco Rodríguez, B. Seashore-Ludlow, and O. Spjuth
-Minimising Source-Plate Swaps for Robotised Compound Dispensing in Microplates
+[Minimising Source-Plate Swaps for Robotised Compound Dispensing in Microplates](https://rdcu.be/eJh8V)
 In: G. Tack (editor), CP-AI-OR 2025. Lecture Notes in Computer Science, volume 15762, pages 256-273. Springer, 2025.
 DOI: 10.1007/978-3-031-95973-8_16
 
