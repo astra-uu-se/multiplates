@@ -12,7 +12,7 @@ The materials include:
 4. Dataframes, logs and a Python Notebook with aggregated results
 
 
-# Data generation
+## Data generation
 The generated dataset is contained in files  `multiplate_dzn_files.zip` and `multiplates_models_evaluation.csv` (Dataset 1), `multiplate_dzn_files_2_only.zip` and `multiplates_models_evaluation_2_only.csv` (Dataset 2). Uncompress them and move to the next step of the evaluation.
 
 If you wish to generate datasets anew then:
@@ -28,7 +28,7 @@ Each dataset generation takes a few minutes.
 Create the folder `multiplate_dzn_files` and/or `multiplate_dzn_files_2_only` if not created prior.
 
 
-# Executing computational experiments
+## Executing computational experiments
 
 To execute the computational experiments first install and configure Python (version 3.7.0 or later), MiniZinc (version 2.8.0 or later) and Gurobi (version 11.0.3 or later). Make sure that the versions of installed solvers, Chuffed, CP-SAT and Gurobi, are matched the versions written in the configuration files `chuffed_config.mpc`, `cpsat_config.mpc` and `gurobi_config.mpc` respectively.
 
@@ -44,8 +44,33 @@ Then:
 	5. `time python3 run_evaluation_cfg2_2combo.py` to test Dataset 2 on CP-SAT (4 threads)
 	6. `time python3 run_evaluation_cfg3_2combo.py` to test Dataset 2 on Gurobi (4 threads)
 
-# Aggregating the results
+## Aggregating the results
 
 Execution of computational experiments will result in the creation of files `multiplates_models_evaluation_complete_chuffed_config.csv`, `multiplates_models_evaluation_complete_cpsat_config.csv`, `multiplates_models_evaluation_complete_gurobi_config.csv`,  `multiplates_models_evaluation_two_only_chuffed_config.csv`, `multiplates_models_evaluation_two_only_cpsat_config.csv`, `multiplates_models_evaluation_two_only_gurobi_config.csv`.
 
 Open the Jupyter Notebook `evaluate_multiplates.ipynb` in, either, Anaconda, Google Collab or equivalents. Rerun or modify the code if needed.
+
+
+## Citation
+
+The following manuscript can be used to cite this project:
+
+R. Gindullin, M. A. Francisco Rodríguez, B. Seashore-Ludlow, and O. Spjuth
+Minimising Source-Plate Swaps for Robotised Compound Dispensing in Microplates
+In: G. Tack (editor), CP-AI-OR 2025. Lecture Notes in Computer Science, volume 15762, pages 256-273. Springer, 2025.
+DOI: 10.1007/978-3-031-95973-8_16
+
+```bibtex
+@In{PlateSwaps2025,
+	author = {Gindullin, Ramiz and Francisco Rodr\'iguez, Mar\'ia Andre\'ina and Seashore-Ludlow, Brinton and Spjuth, Ola},
+	title = {Minimising Source-Plate Swaps for Robotised Compound Dispensing in Microplates},
+	year = {2025},
+	doi = {10.1007/978-3-031-95973-8_16},
+	URL = {https://doi.org/10.1007/978-3-031-95973-8_16},
+	editor = {Tack, Guido},
+	booktitle = {Integration of Constraint Programming, Artificial Intelligence, and Operations Research},
+	publisher = {Springer Nature Switzerland},
+	pages = {256--273},
+	isbn = {978-3-031-95973-8}
+}
+```
